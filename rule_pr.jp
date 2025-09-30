@@ -1,0 +1,41 @@
+<Rule name="AssignAzureGroupLater" type="Custom">
+  <Description>
+    Assigns an existing Azure AD user to a group separately from creation
+  </Description>
+  <Source>
+    import sailpoint.object.ProvisioningPlan;
+    import sailpoint.object.Application;
+    import sailpoint.object.ProvisioningPlan.AccountRequest;
+    import sailpoint.object.ProvisioningPlan.AttributeRequest;
+    import sailpoint.api.Provisioner;
+
+    String azureAppName = "Azure AD";              // Change to your app name
+    String identityName = "jdoe";                  // The IdentityIQ identity
+    String groupObjectId = "YOUR-GROUP-OBJECT-ID"; // Azure AD group
+
+    // Build ProvisioningPlan
+    ProvisioningPlan plan = new ProvisioningPlan();
+    Application app = context.getObjectByName(Application.class, azureAppName);
+
+    AccountRequest acctReq = new AccountRequest();
+    acctReq.setApplication(app.getName());
+    acctReq.setNativeIdentity(identityName);  // maps to Azure AD user
+    acctReq.setOperation(AccountRequest.Operation.Modify);
+
+    AttributeRequest groupAttr = new AttributeRequest(
+        "memberOf",                               // connector schema attribute
+        ProvisioningPlan.Operation.Add,
+        groupObjectId
+    );
+    acctReq.add(groupAttr);
+
+    plan.add(acctReq);
+
+    // Submit to Provisioner
+    Provisioner prov = new Provisioner(context);
+    prov.compile(plan);
+    prov.execute(plan);
+
+    System.out.println("✅ Sent group assignment for " + identityName);
+  </Source>
+</Rule>
