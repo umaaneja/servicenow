@@ -1,4 +1,8 @@
-  Identity identity = context.getObjectByName(Identity.class, identityName);
+  import sailpoint.object.Identity;
+    import sailpoint.object.Link;
+
+
+Identity identity = context.getObjectByName(Identity.class, identityName);
     if (identity == null) {
         System.out.println("❌ Identity not found: " + identityName);
     } else {
