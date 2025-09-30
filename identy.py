@@ -12,3 +12,4 @@ Identity identity = context.getObjectByName(Identity.class, identityName);
             }
         }
     }
+ProvisioningPlan plan = new ProvisioningPlan(identity);
