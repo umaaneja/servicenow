@@ -3,9 +3,17 @@
     <Type>Identity</Type>
     <Query>
         <Filter>
-            <And>
+             <And>
+                <!-- splegacy not blank -->
                 <Condition property="splegacy" operator="NOTNULL"/>
+                <!-- must have Workday -->
+                <Condition property="applications.name" operator="EQUALS" value="Workday"/>
+                <!-- must have Active Directory -->
+                <Condition property="applications.name" operator="EQUALS" value="Active Directory"/>
+                <!-- must have Azure -->
+                <Condition property="applications.name" operator="EQUALS" value="Azure"/>
             </And>
+            
         </Filter>
     </Query>
     <Columns>
